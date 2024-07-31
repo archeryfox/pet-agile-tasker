@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: "Dockerfile"
+    ports:
+      - "3000:3000"
+    command: npm start
+
+  django:
+    build:
+      context: ./backend
+      dockerfile: "Dockerfile"
+    ports:
+      - "8000:8000"
+    
+  mobile-web:
+    build:
+      context: ./mobile
+      dockerfile: "Dockerfile"
+    ports:
+      - "8081:8081"
+    command: npm run web

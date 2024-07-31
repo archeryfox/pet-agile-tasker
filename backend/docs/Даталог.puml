@@ -1,0 +1,117 @@
+@startuml
+
+class Role {
+    name: CharField
+    is_deleted: BooleanField
+}
+
+class LogicUser {
+    username: CharField
+    email: CharField
+    password: CharField
+    roles: ManyToManyField(Role, through=UserRole)
+    token: CharField
+    is_deleted: BooleanField
+}
+
+class User {
+    username: CharField
+    email: CharField
+    password: CharField
+    is_active: BooleanField
+    is_admin: BooleanField
+    last_login: DateTimeField
+}
+
+class Project {
+    name: CharField
+    description: CharField
+    start_date: DateField
+    end_date: DateField
+    is_deleted: BooleanField
+}
+
+class Team {
+    name: CharField
+    lead: ForeignKey(LogicUser)
+    is_deleted: BooleanField
+}
+
+class Employee {
+    user: ForeignKey(LogicUser)
+    team: ForeignKey(Team)
+}
+
+class Priority {
+    name: CharField
+    is_deleted: BooleanField
+}
+
+class TaskStatus {
+    name: CharField
+    is_deleted: BooleanField
+}
+
+class Task {
+    name: CharField
+    description: CharField
+    status: ForeignKey(TaskStatus)
+    priority: ForeignKey(Priority)
+    start_date: DateField
+    due_date: DateField
+    assigned_to: ForeignKey(Employee)
+    project: ForeignKey(Project)
+    is_deleted: BooleanField
+}
+
+class TaskComment {
+    task: ForeignKey(Task)
+    user: ForeignKey(LogicUser)
+    comment_text: CharField
+    comment_date: DateTimeField
+    is_deleted: BooleanField
+}
+
+class History {
+    task: ForeignKey(Task)
+    user: ForeignKey(LogicUser)
+    field_changed: CharField
+    old_value: CharField
+    new_value: CharField
+    change_date: DateTimeField
+    is_deleted: BooleanField
+}
+
+class Log {
+    user: ForeignKey(LogicUser)
+    action: CharField
+    timestamp: DateTimeField
+    is_deleted: BooleanField
+}
+
+class UserRole {
+    user: ForeignKey(LogicUser)
+    role: ForeignKey(Role)
+}
+
+LogicUser "1" --* "0..*" UserRole
+Role "1" --* "0..*" UserRole
+
+LogicUser --> "0..*" Employee
+Team --> "0..*" Employee
+
+LogicUser --> "0..*" Task
+Project --> "0..*" Task
+TaskStatus --> "0..*" Task
+Priority --> "0..*" Task
+Employee --> "0..*" Task
+
+Task --> "0..*" TaskComment
+LogicUser --> "0..*" TaskComment
+
+Task --> "0..*" History
+LogicUser --> "0..*" History
+
+LogicUser --> "0..*" Log
+
+@enduml
