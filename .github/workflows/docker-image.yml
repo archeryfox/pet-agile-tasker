@@ -14,5 +14,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: Переход в директорию с .yml файлом
+      run: cd ../../
     - name: Build the Docker image
       run: docker-compose up
