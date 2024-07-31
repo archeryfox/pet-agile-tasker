@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  build:
+  run:
 
     runs-on: ubuntu-latest
 
@@ -17,4 +17,5 @@ jobs:
     - name: Переход в директорию с .yml файлом
       run: cd ../../
     - name: Build the Docker image
-      run: docker-compose up
+      run: docker-compose up -d
+ 
