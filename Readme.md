@@ -21,3 +21,4 @@ docker pull ghcr.io/archeryfox/fullstack-agile/backend:0.5.0
 И готово, открываем http://localhost:3000(десктоп), http://localhost:8000(бекенд апи, по сути можно не открывать), http://localhost:8081(мобильная версия на React Native)  
 Вход логин 123 пароль 123
 
+
